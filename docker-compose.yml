@@ -12,7 +12,7 @@ services:
 
     wp.wuxt:
         container_name: ${WUXT_WP_CONTAINER:-wp.wuxt}
-        image: wordpress:5.2.2-php7.2-apache
+        image: wordpress:5.6.0-php7.4-apache
         volumes:
           - ./wp-content:/var/www/html/wp-content:rw,cached
         expose:

@@ -43,14 +43,26 @@ module.exports = {
     // Doc: https://axios.nuxtjs.org/usage
     '@nuxtjs/axios',
     '@nuxtjs/pwa',
+    '@nuxt/content',
+    // Doc: https://bootstrap-vue.org/docs#nuxtjs-module
+    'bootstrap-vue/nuxt',
+    '@nuxtjs/style-resources', 
     '~/modules/static/',
     [
       '~/modules/wp-api/index',
       {
         endpoint: 'http://' + (process.env.WUXT_WP_CONTAINER ? process.env.WUXT_WP_CONTAINER : 'wp.wuxt') + ':80/wp-json/'
       }
-    ]
+    ],
   ],
+  // Use custom scss variables: https://medium.com/@teetlaja/how-to-setup-nuxt-js-and-bootstrap-vue-with-custom-variables-c11639dcb75f
+  bootstrapVue: {
+    bootstrapCSS: false,
+    bootstrapVueCSS: false
+  },
+  styleResources: {
+    scss: '@/assets/styles/scss/_variables.scss'
+  },
   /*
    ** Axios module configuration
    */

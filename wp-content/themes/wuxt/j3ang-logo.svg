@@ -1,0 +1,22 @@
+<svg viewBox="0 0 160 160" width="160" height="160">
+	<g class="svgWrapper">
+		<defs>
+			<filter id="glow">
+				<feGaussianBlur class="blur" result="coloredBlur" stdDeviation="4"></feGaussianBlur>
+				<feMerge>
+					<feMergeNode in="coloredBlur"></feMergeNode>
+                    <feMergeNode in="coloredBlur"></feMergeNode>
+                    <feMergeNode in="coloredBlur"></feMergeNode>
+					<feMergeNode in="SourceGraphic"></feMergeNode>
+				</feMerge>
+			</filter>
+		</defs>
+
+        <circle id="my-circle" fill="none" stroke-width="8" stroke="var(--main-color-1)" cx="80" cy="80" r="45" filter="url(#glow)"></circle>
+
+        <animate xlink:href="#my-circle" attributeName="opacity" values="1;0.4;1" keyTimes="0;0.5;1" dur="3.5s" repeatCount="indefinite"></animate>
+
+        <animate xlink:href="#my-circle" attributeName="r" values="45;43;45" keyTimes="0;0.5;1" dur="3.5s" repeatCount="indefinite"></animate>
+
+    </g>
+</svg>
