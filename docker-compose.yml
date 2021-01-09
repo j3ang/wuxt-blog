@@ -2,7 +2,9 @@ version: '2.1'
 services:
     mysql.wuxt:
         container_name: ${WUXT_MYSQL_CONTAINER:-mysql.wuxt}
-        image: mysql:5.7
+        command: --default-authentication-plugin=mysql_native_password
+        restart: always
+        image: mysql:8
         volumes:
             - ./_db:/var/lib/mysql
         environment:
@@ -33,7 +35,7 @@ services:
 
     front.wuxt:
         container_name: ${WUXT_NUXT_CONTAINER:-front.wuxt}
-        image: node:11-slim
+        image: node:14.15.0
         working_dir: '/var/www/app'
         environment:
             - HOST=0.0.0.0
@@ -43,7 +45,7 @@ services:
             - '${WUXT_PORT_FRONTEND-3000}:3000'
         volumes:
             - ./nuxt:/var/www/app
-        command: bash -c "yarn install && WUXT_PORT_BACKEND=${WUXT_PORT_BACKEND:-3080} yarn dev"
+        command: bash -c "WUXT_PORT_BACKEND=${WUXT_PORT_BACKEND:-3080} yarn dev"
         networks:
           - default
 

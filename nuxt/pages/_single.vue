@@ -1,5 +1,4 @@
 <template>
-  <Page v-if="single.type === 'page'" :page="single" />
   <Post v-else :post="single" />
 </template>
 
@@ -8,6 +7,11 @@ import Page from '~/components/templates/Page'
 import Post from '~/components/templates/Post'
 
 export default {
+  // data() {
+  //   return {
+  //     single:{}
+  //   }
+  // },
   async asyncData(context) {
     const { route, app, error } = context
     try {

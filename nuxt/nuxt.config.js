@@ -3,7 +3,6 @@ const pkg = require('./package')
 
 module.exports = {
   mode: 'universal',
-
   env: {
     WUXT_PORT_BACKEND: process.env.WUXT_PORT_BACKEND || '3080'
   },
@@ -29,12 +28,18 @@ module.exports = {
   /*
    ** Global CSS
    */
-  css: ['@/assets/styles/main.scss'],
+  
+  css: [
+    '@/assets/styles/main.scss', 
+  ],
 
   /*
    ** Plugins to load before mounting the App
    */
-  plugins: [{ src: '~/plugins/wp-api-docker-connector', ssr: false }],
+  plugins: [
+    { src: '~/plugins/wp-api-docker-connector', ssr: false },
+    { src: '~/plugins/highlight' }
+],
 
   /*
    ** Nuxt.js modules
@@ -54,6 +59,7 @@ module.exports = {
         endpoint: 'http://' + (process.env.WUXT_WP_CONTAINER ? process.env.WUXT_WP_CONTAINER : 'wp.wuxt') + ':80/wp-json/'
       }
     ],
+
   ],
   // Use custom scss variables: https://medium.com/@teetlaja/how-to-setup-nuxt-js-and-bootstrap-vue-with-custom-variables-c11639dcb75f
   bootstrapVue: {
@@ -63,6 +69,21 @@ module.exports = {
   styleResources: {
     scss: '@/assets/styles/scss/_variables.scss'
   },
+  /*
+   ** @Nuxt/Content module configuration
+   */
+  content: {
+    markdown: {
+      highlighter(rawCode, lang) {
+        const wrap = (code, lang) => `<pre><code class="hljs ${lang}">${code}</code></pre>`
+        if (!lang) {
+          return wrap(highlightjs.highlightAuto(rawCode).value, lang)
+        }
+        return wrap(highlightjs.highlight(lang, rawCode).value, lang)
+      }
+    }
+  },
+
   /*
    ** Axios module configuration
    */
@@ -77,6 +98,7 @@ module.exports = {
     /*
      ** You can extend webpack config here
      */
+    // transpile: [ 'highlight.js'],
     // extend(config, ctx) {
     //   // Run ESLint on save
     //   if (ctx.isDev && ctx.isClient) {

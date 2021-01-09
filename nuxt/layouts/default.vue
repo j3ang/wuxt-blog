@@ -4,6 +4,8 @@
       <header class="header">
         <Logo />
         <nav class="header__nav">
+          <nuxt-link to="/">Home</nuxt-link>
+
           <nuxt-link to="/projects">Projects</nuxt-link>
           <nuxt-link to="/books">Books</nuxt-link>
         </nav>
