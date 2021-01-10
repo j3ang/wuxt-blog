@@ -1,13 +1,9 @@
 <template>
-  <main >
+  <main>
     <article class="container position-relative">
       <h1 v-html="post.title.rendered" class="wp__title"></h1>
-      </div>
-      <!-- {{ this.post }} -->
       <div v-html="renderedContent" class="wp__content"></div>
-
     </article>
-
   </main>
 </template>
 

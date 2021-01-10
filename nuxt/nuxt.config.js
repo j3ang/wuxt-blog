@@ -4,7 +4,8 @@ const pkg = require('./package')
 module.exports = {
   mode: 'universal',
   router: {
-    base: '/wuxt-blog/'
+    base: '/wuxt-blog/',
+    trailingSlash: true
   },
   env: {
     WUXT_PORT_BACKEND: process.env.WUXT_PORT_BACKEND || '3080',
