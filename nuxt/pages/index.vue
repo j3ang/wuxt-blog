@@ -7,15 +7,30 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
+
 export default {
-  async asyncData(context) {
-    const { route, app, error } = context
-    try {
-      let posts = await app.$wp.posts()
-      return { posts }
-    } catch (e) {
-      error(e)
-    }
+  // async asyncData(context) {
+  //   const { route, app, error } = context
+  //   try {
+  //     let posts = await app.$wp.posts()
+  //     return { posts }
+  //   } catch (e) {
+  //     error(e)
+  //   }
+  // },
+  computed: {
+    ...mapGetters('posts', ['topPosts']),
+  },
+  async created() {
+    this.handleClick()
+  },
+  methods: {
+    async handleClick() {
+      this.data = await this.$store.dispatch('posts/GET_DATA')
+    },
+  },
+}
   },
  
 
