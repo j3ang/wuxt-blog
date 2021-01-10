@@ -3,11 +3,11 @@
     <headroom :classes="headroomClasses">
       <header class="header">
         <Logo />
-        <nav class="header__nav">
+        <nav class="header__nav container">
           <nuxt-link to="/">Home</nuxt-link>
-
           <nuxt-link to="/projects">Projects</nuxt-link>
           <nuxt-link to="/books">Books</nuxt-link>
+          <a href="http://localhost:3080/admin">Admin</a>
         </nav>
       </header>
     </headroom>
@@ -50,6 +50,9 @@ export default {
 .wp {
   &__title {
     margin-bottom: 30px;
+    font-weight: bold;
+    text-transform: capitalize;
+    font-size: 3em;
   }
 
   &__content {
@@ -67,24 +70,26 @@ export default {
 
 .header {
   position: relative;
-
+  background: #303334;
   display: flex;
   flex-direction: column;
   justify-content: center;
-  align-items: center;
-
-  margin-top: 100px;
+  align-items: flex-start;
   margin-bottom: 50px;
-  padding-bottom: 50px;
-
   border-bottom: 2px solid #ececec;
 
   &__nav {
     margin-top: 10px;
 
     a {
-      margin: 5px;
+      margin-right: 1.2em;
+      text-decoration: none;
+      font-size: 1.5em;
     }
   }
+}
+
+main {
+  margin-top: 1.5em !important;
 }
 </style>

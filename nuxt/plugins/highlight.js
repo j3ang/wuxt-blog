@@ -1,6 +1,6 @@
 import Vue from "vue";
 import highlightjs from 'highlight.js'
-import 'highlight.js/styles/default.css';
+import 'highlight.js/styles/obsidian.css';
 
 Vue.use(highlightjs);
 

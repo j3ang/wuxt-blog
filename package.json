@@ -15,7 +15,6 @@
     "scaffold:tax": "node ./_scripts/scaffold/taxonomy.js",
     "generate": "docker exec front.wuxt yarn generate && docker-compose --log-level CRITICAL -f dist.yml up -d && docker-compose --log-level CRITICAL -f dist.yml restart && docker-compose --log-level CRITICAL down && docker-compose --log-level CRITICAL up -d",
     "deploy": "push-dir --dir=nuxt/dist --branch=gh-pages --cleanup"
-    
   },
   "repository": {
     "type": "git",

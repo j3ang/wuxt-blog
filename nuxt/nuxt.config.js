@@ -3,11 +3,12 @@ const pkg = require('./package')
 
 module.exports = {
   mode: 'universal',
-  router:{
-    base:'/wuxt-blog/'
+  router: {
+    base: '/wuxt-blog/'
   },
   env: {
-    WUXT_PORT_BACKEND: process.env.WUXT_PORT_BACKEND || '3080'
+    WUXT_PORT_BACKEND: process.env.WUXT_PORT_BACKEND || '3080',
+    baseUrl: 'http://localhost:' + process.env.WUXT_PORT_BACKEND
   },
 
   /*
@@ -31,18 +32,17 @@ module.exports = {
   /*
    ** Global CSS
    */
-  
-  css: [
-    '@/assets/styles/main.scss', 
-  ],
+
+  css: ['@/assets/styles/main.scss'],
 
   /*
    ** Plugins to load before mounting the App
    */
   plugins: [
     { src: '~/plugins/wp-api-docker-connector', ssr: false },
-    { src: '~/plugins/highlight' }
-],
+    { src: '~/plugins/highlight' },
+    { src: '~/plugins/vueMoment' }
+  ],
 
   /*
    ** Nuxt.js modules
@@ -50,19 +50,24 @@ module.exports = {
   modules: [
     // Doc: https://axios.nuxtjs.org/usage
     '@nuxtjs/axios',
+    '@nuxtjs/apollo',
     '@nuxtjs/pwa',
     '@nuxt/content',
     // Doc: https://bootstrap-vue.org/docs#nuxtjs-module
     'bootstrap-vue/nuxt',
-    '@nuxtjs/style-resources', 
+    '@nuxtjs/style-resources',
     '~/modules/static/',
     [
       '~/modules/wp-api/index',
       {
-        endpoint: 'http://' + (process.env.WUXT_WP_CONTAINER ? process.env.WUXT_WP_CONTAINER : 'wp.wuxt') + ':80/wp-json/'
+        endpoint:
+          'http://' +
+          (process.env.WUXT_WP_CONTAINER
+            ? process.env.WUXT_WP_CONTAINER
+            : 'wp.wuxt') +
+          ':80/wp-json/'
       }
-    ],
-
+    ]
   ],
   // Use custom scss variables: https://medium.com/@teetlaja/how-to-setup-nuxt-js-and-bootstrap-vue-with-custom-variables-c11639dcb75f
   bootstrapVue: {
@@ -78,7 +83,8 @@ module.exports = {
   content: {
     markdown: {
       highlighter(rawCode, lang) {
-        const wrap = (code, lang) => `<pre><code class="hljs ${lang}">${code}</code></pre>`
+        const wrap = (code, lang) =>
+          `<pre><code class="hljs ${lang}">${code}</code></pre>`
         if (!lang) {
           return wrap(highlightjs.highlightAuto(rawCode).value, lang)
         }
@@ -92,6 +98,14 @@ module.exports = {
    */
   axios: {
     // See https://github.com/nuxt-community/axios-module#options
+  },
+
+  apollo: {
+    clientConfigs: {
+      default: {
+        httpEndpoint: process.env.baseUrl + '/graphql/'
+      }
+    }
   },
 
   /*
@@ -118,7 +132,13 @@ module.exports = {
   generate: {
     routes: function() {
       return axios
-        .get('http://' + (process.env.WUXT_WP_CONTAINER ? process.env.WUXT_WP_CONTAINER : 'wp.wuxt') + ':80/wp-json/wuxt/v1/generate')
+        .get(
+          'http://' +
+            (process.env.WUXT_WP_CONTAINER
+              ? process.env.WUXT_WP_CONTAINER
+              : 'wp.wuxt') +
+            ':80/wp-json/wuxt/v1/generate'
+        )
         .then(({ data }) => data)
     }
   }
