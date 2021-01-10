@@ -50,7 +50,6 @@ module.exports = {
   modules: [
     // Doc: https://axios.nuxtjs.org/usage
     '@nuxtjs/axios',
-    '@nuxtjs/apollo',
     '@nuxtjs/pwa',
     '@nuxt/content',
     // Doc: https://bootstrap-vue.org/docs#nuxtjs-module
