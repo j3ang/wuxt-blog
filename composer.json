@@ -1,0 +1,26 @@
+{
+  "name": "bitnami/wordpress",
+  "description": "WP Migrate DB Pro for WordPress site",
+  "repositories": [
+    {
+      "type": "composer",
+      "url": "https://composer.deliciousbrains.com"
+    }
+  ],
+  "require": {
+    "deliciousbrains-plugin/wp-migrate-db-pro": "*",
+    "deliciousbrains-plugin/wp-migrate-db-pro-cli": "*",
+    "deliciousbrains-plugin/wp-migrate-db-pro-media-files": "*",
+    "deliciousbrains-plugin/wp-migrate-db-pro-multisite-tools": "*",
+    "deliciousbrains-plugin/wp-migrate-db-pro-theme-plugin-files": "*",
+    "yoast/wordpress-seo": "*",
+    "wp-graphql/wp-graphql": "*"
+  },
+  "extra": {
+    "installer-paths": {
+      "/bitnami/wordpress/wp-content/plugins/{$name}/": [
+        "type:wordpress-plugin"
+      ]
+    }
+  }
+}

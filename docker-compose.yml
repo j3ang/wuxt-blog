@@ -1,53 +1,78 @@
-version: '2.1'
+version: "3.8"
 services:
-    mysql.wuxt:
-        container_name: ${WUXT_MYSQL_CONTAINER:-mysql.wuxt}
-        command: --default-authentication-plugin=mysql_native_password
-        restart: always
-        image: mysql:8
-        volumes:
-            - ./_db:/var/lib/mysql
-        environment:
-            MYSQL_ROOT_PASSWORD: dev
-        networks:
-          - default
+  wordpress:
+    container_name: Wordpress
+    image: j3ang/my-custom-bitnami-wordpress:latest
+    ports:
+      - "443:8443"
+      - "3306:3306"
+      - "3080:8080"
+    volumes:
+      - "wordpress_data:/bitnami/wordpress"
+      - "./composer.json:/composer.json"
+      - "./composer-update.sh:/composer-update.sh"
+      - "./wp-content/themes/wuxt:/bitnami/wordpress/wp-content/themes/wuxt"
+      - "./.zshrc:/.zshrc"
+      - ".:/localhost"
 
-    wp.wuxt:
-        container_name: ${WUXT_WP_CONTAINER:-wp.wuxt}
-        image: wordpress:5.6.0-php7.4-apache
-        volumes:
-          - ./wp-content:/var/www/html/wp-content:rw,cached
-        expose:
-          - '${WUXT_PORT_BACKEND:-3080}'
-        ports:
-          - '${WUXT_PORT_BACKEND:-3080}:80'
-        environment:
-          WORDPRESS_DB_HOST: ${WUXT_MYSQL_CONTAINER:-mysql.wuxt}:3306
-          WORDPRESS_DB_NAME: wuxt
-          WORDPRESS_DB_USER: root
-          WORDPRESS_DB_PASSWORD: dev
-          WUXT_PORT_BACKEND: ${WUXT_PORT_BACKEND:-3080}
-          WORDPRESS_CONFIG_EXTRA: |
-            define('WP_SITEURL', 'http://localhost:${WUXT_PORT_BACKEND:-3080}' );
-            define('WP_HOME', 'http://localhost:${WUXT_PORT_BACKEND:-3080}' );
-        networks:
-          - default
+    depends_on:
+      - mariadb
+    env_file:
+      - .env
+    restart: unless-stopped
 
-    front.wuxt:
-        container_name: ${WUXT_NUXT_CONTAINER:-front.wuxt}
-        image: node:14.15.0
-        working_dir: '/var/www/app'
-        environment:
-            - HOST=0.0.0.0
-            - WUXT_WP_CONTAINER=${WUXT_WP_CONTAINER:-wp.wuxt}
-            - WUXT_PORT_BACKEND=${WUXT_PORT_BACKEND:-3080}
-        ports:
-            - '${WUXT_PORT_FRONTEND-3000}:3000'
-        volumes:
-            - ./nuxt:/var/www/app
-        command: bash -c "yarn install && WUXT_PORT_BACKEND=${WUXT_PORT_BACKEND:-3080} yarn dev"
-        networks:
-          - default
+  sftp:
+    image: j3ang/docker-ssh:latest
+    ports:
+      - "2202:22"
+    volumes:
+      - wordpress_data:/var/www/wordpress
 
-networks:
-    default:
+  mariadb:
+    container_name: Database
+    image: docker.io/bitnami/mariadb:10.3-debian-10
+    volumes:
+      - mariadb_data:/bitnami/mariadb
+      - "./scripts:/scripts"
+    environment:
+      - MARIADB_USER=bn_wordpress
+      - MARIADB_DATABASE=bitnami_wordpress
+      - ALLOW_EMPTY_PASSWORD=yes
+
+  phpmyadmin:
+    container_name: Phpmyadmin
+    image: bitnami/phpmyadmin:latest
+    depends_on:
+      - mariadb
+    environment:
+      - APACHE_HTTP_PORT_NUMBER=8181
+      - APACHE_HTTPS_PORT_NUMBER=8143
+    ports:
+      - 5880:8181
+      - 5443:8143
+    volumes:
+      - phpmyadmin_data:/bitnami/phpmyadmin
+
+  frontend:
+    container_name: j3ang-App
+    image: node:14.15.0
+    ports:
+      - 80:3000
+    links:
+      - wordpress:'0.0.0.0'
+    environment:
+      - HOST=0.0.0.0
+      - WUXT_WP_CONTAINER=wordpress
+      - WUXT_PORT_BACKEND=3080
+    working_dir: "/var/www/app"
+    command: bash -c "yarn install && WUXT_PORT_BACKEND=${WUXT_PORT_BACKEND:-3080}  yarn dev"
+    volumes:
+      - ./nuxt:/var/www/app
+
+volumes:
+  mariadb_data:
+    driver: local
+  wordpress_data:
+    driver: local
+  phpmyadmin_data:
+    driver: local
