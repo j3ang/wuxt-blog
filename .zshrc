@@ -34,6 +34,10 @@ export PATH=/usr/local/bin:/usr/local/apache-maven-2.2.1/bin:/usr/local/maven-1.
 # load RVM
 [[ -s "$HOME/.rvm/scripts/rvm" ]] && . "$HOME/.rvm/scripts/rvm"
 
+
+alias 'dp=cd /opt/bitnami/wordpress/wp-content/plugins'
+alias 'dt=cd /opt/bitnami/wordpress/wp-content/themes'
+
 # copied from .bash_aliases 2001.07.19
 # -------------------------------------------------------------------
 # some alias settings, just for fun

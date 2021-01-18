@@ -8,6 +8,8 @@ wp-content/uploads/*
 wp-content/plugins/*
 wp-content/themes/wuxt/cpts/*
 wp-content/themes/mynote/*
+wp-content/themes/astra/*
+wp-content/themes/j3ang-theme-blog/*
 !wp-content/themes/wuxt/cpts/index.php
 wp-content/themes/wuxt/taxonomies/*
 !wp-content/themes/wuxt/taxonomies/index.php

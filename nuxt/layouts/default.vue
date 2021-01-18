@@ -1,3 +1,5 @@
+<!-- @format -->
+
 <template>
   <div>
     <headroom :classes="headroomClasses">
@@ -7,7 +9,8 @@
           <nuxt-link to="/">Home</nuxt-link>
           <nuxt-link to="/projects">Projects</nuxt-link>
           <nuxt-link to="/books">Books</nuxt-link>
-          <a href="http://localhost:3080/admin">Admin</a>
+          <a :href="adminUrl">Admin</a>
+          <a :href="graphqlUrl" target="_blank">GraphqlUrl</a>
         </nav>
       </header>
     </headroom>
@@ -42,9 +45,14 @@ export default {
     Logo,
     headroom,
   },
+
+  computed: {
+    adminUrl: () => process.env.baseUrl + '/admin',
+    graphqlUrl: () =>
+      process.env.baseUrl + '/wp-admin/admin.php?page=graphiql-ide',
+  },
 }
 </script>
-
 
 <style lang="scss">
 .wp {

@@ -5,10 +5,10 @@ module.exports = {
   mode: 'universal',
   router: {
     base: '/wuxt-blog/',
-    trailingSlash: true
+    trailingSlash: false
   },
   env: {
-    WUXT_PORT_BACKEND: process.env.WUXT_PORT_BACKEND || '3080',
+    WUXT_PORT_BACKEND: process.env.WUXT_PORT_BACKEND || '3088',
     baseUrl: 'http://localhost:' + process.env.WUXT_PORT_BACKEND
   },
 
@@ -35,14 +35,22 @@ module.exports = {
    */
 
   css: ['@/assets/styles/main.scss'],
-
+  // Use custom scss variables: https://medium.com/@teetlaja/how-to-setup-nuxt-js-and-bootstrap-vue-with-custom-variables-c11639dcb75f
+  bootstrapVue: {
+    bootstrapCSS: false,
+    bootstrapVueCSS: false
+  },
+  styleResources: {
+    scss: '@/assets/styles/scss/_variables.scss'
+  },
   /*
    ** Plugins to load before mounting the App
    */
   plugins: [
     { src: '~/plugins/wp-api-docker-connector', ssr: false },
     { src: '~/plugins/highlight' },
-    { src: '~/plugins/vueMoment' }
+    { src: '~/plugins/vueMoment' },
+    { src: '~/plugins/vueStringFilter' }
   ],
 
   /*
@@ -69,14 +77,7 @@ module.exports = {
       }
     ]
   ],
-  // Use custom scss variables: https://medium.com/@teetlaja/how-to-setup-nuxt-js-and-bootstrap-vue-with-custom-variables-c11639dcb75f
-  bootstrapVue: {
-    bootstrapCSS: false,
-    bootstrapVueCSS: false
-  },
-  styleResources: {
-    scss: '@/assets/styles/scss/_variables.scss'
-  },
+
   /*
    ** @Nuxt/Content module configuration
    */
